@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_position_fragment"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Position" />
+        <item
+            android:id="@+id/nav_akt_map"
+            android:icon="@drawable/ic_menu_map"
+            android:title="Show Akt. Track" />
+        <item
+            android:id="@+id/nav_transfer_to_pgsql"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Transfer to PGSQL" />
+    </group>
+
+</menu>
