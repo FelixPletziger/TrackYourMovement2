@@ -40,8 +40,8 @@ public class PostgresqlTask extends AsyncTask<Void, Void, Void> {
             //Log.e("Zeit",timeStamp.toString());
 
             for (TrackPoint poi : data) {
-                String sql = "INSERT INTO "+table+" (users, latitude, longitude, speed, time) VALUES" +
-                        "('"+poi.getUser()+"', "+poi.getLatitude()+", "+poi.getLongitude()+", "+poi.getSpeed()+", '"+poi.getDate()+"');";
+                String sql = "INSERT INTO "+table+" (users, latitude, longitude, speed, time, geom) VALUES"+
+                        "('"+poi.getUser()+"', "+poi.getLatitude()+", "+poi.getLongitude()+", "+poi.getSpeed()+", '"+poi.getDate()+"', ST_SetSRID(ST_MakePoint("+poi.getLongitude()+", "+poi.getLatitude()+"), 4326));";
 
                 st.executeUpdate(sql);
             }

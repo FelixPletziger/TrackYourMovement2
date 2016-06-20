@@ -1,5 +1,6 @@
 package bo.hs.com.trackyourmovement;
 
+
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,9 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -32,13 +30,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DatabaseConnection datasource; //SQLDATABASE
+    public DatabaseConnection datasource; //SQLDATABASE
 
     public Switch gps;
     public TextView lat;
     public TextView lon;
     public TextView speed;
-    //private ListView coordinates;
+
+    //private GoogleMap mMap;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -57,15 +56,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -78,11 +68,6 @@ public class MainActivity extends AppCompatActivity
         //DATABASE
         datasource = new DatabaseConnection(this);
 
-        /*gps   = (Switch) findViewById(R.id.gps_switch);
-        lat   = (TextView) findViewById(R.id.lat);
-        lon   = (TextView) findViewById(R.id.lon);
-        speed = (TextView) findViewById(R.id.speed);*/
-
         //coordinates = (ListView) findViewById(R.id.coorlist);
 
         //list.add("Latitude:\t\tLongitude:\t\tGeschwindigkeit:");
@@ -94,14 +79,6 @@ public class MainActivity extends AppCompatActivity
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                /*if(lat.getText()!="" && lon.getText()!="") {
-                    if (location.hasSpeed()){
-                        list.add(coorfor.format(location.getLatitude()) + "\t\t\t" + coorfor.format(location.getLongitude()) + "\t\t\t\t\t" + speedfor.format(location.getSpeed()));
-                    }else{
-                        list.add(coorfor.format(location.getLatitude()) + "\t\t\t" + coorfor.format(location.getLongitude()));
-                    }
-                    adapter.notifyDataSetChanged();
-                }*/
 
                 lat.setText(coorfor.format(location.getLatitude()));
                 lon.setText(coorfor.format(location.getLongitude()));
@@ -111,6 +88,11 @@ public class MainActivity extends AppCompatActivity
                 datasource.open();
                 TrackPoint TrP = datasource.createTrackPoint("test",location.getLatitude(), location.getLongitude(), location.getSpeed(), dateFormatted);
                 datasource.close();
+
+                /*if(mMap != null) {
+                    LatLng point = new LatLng(TrP.getLatitude(), TrP.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(point));
+                }*/
 
             }
 
@@ -152,11 +134,6 @@ public class MainActivity extends AppCompatActivity
                     locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
                 }else{
                     locationManager.removeUpdates(locationListener);
-                    /*datasource.open();
-                    List<TrackPoint> values = datasource.getAllTrackPoints();
-                    datasource.close();
-                    Log.e("Database DATA", values.toString());*/
-                    //new PostgresqlTask().execute();
                 }
             }
         });
