@@ -1,7 +1,6 @@
 package bo.hs.com.trackyourmovement;
 
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -11,6 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,12 +23,19 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback {
 
     public DatabaseConnection datasource; //SQLDATABASE
 
@@ -36,8 +43,6 @@ public class MainActivity extends AppCompatActivity
     public TextView lat;
     public TextView lon;
     public TextView speed;
-
-    //private GoogleMap mMap;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -177,7 +182,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_position_fragment) {
             fragmentManager.beginTransaction()
@@ -193,9 +198,15 @@ public class MainActivity extends AppCompatActivity
                     .commit();
         }
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 
     @Override
@@ -258,4 +269,6 @@ public class MainActivity extends AppCompatActivity
     public void setSpeed(TextView speed) {
         this.speed = speed;
     }
+
+
 }
