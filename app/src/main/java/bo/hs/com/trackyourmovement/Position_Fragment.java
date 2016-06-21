@@ -16,8 +16,9 @@ import android.widget.TextView;
 public class Position_Fragment extends Fragment {
 
     View position;
-    /*private Switch gps;
-    private TextView lat;
+    private Switch gps;
+    private boolean gpsboolean;
+    /*private TextView lat;
     private TextView lon;
     private TextView speed;*/
 
@@ -26,7 +27,16 @@ public class Position_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         position = inflater.inflate(R.layout.position_fragment, container, false);
 
-        ((MainActivity)getActivity()).setGps((Switch)   position.findViewById(R.id.gps_switch));
+        gps = (Switch)   position.findViewById(R.id.gps_switch);
+        gpsboolean = ((MainActivity)getActivity()).isAlarmUp();
+
+        if(gpsboolean){
+            gps.setChecked(true);
+        }else{
+            gps.setChecked(false);
+        }
+
+        ((MainActivity)getActivity()).setGps(gps);
         ((MainActivity)getActivity()).setLat((TextView) position.findViewById(R.id.lat));
         ((MainActivity)getActivity()).setLon((TextView) position.findViewById(R.id.lon));
         ((MainActivity)getActivity()).setSpeed((TextView) position.findViewById(R.id.speed));
