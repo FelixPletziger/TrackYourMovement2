@@ -28,7 +28,7 @@ public class Position_Fragment extends Fragment {
         position = inflater.inflate(R.layout.position_fragment, container, false);
 
         gps = (Switch)   position.findViewById(R.id.gps_switch);
-        gpsboolean = ((MainActivity)getActivity()).isAlarmUp();
+        gpsboolean = ((MainActivity)getActivity()).alarmUp;
 
         if(gpsboolean){
             gps.setChecked(true);

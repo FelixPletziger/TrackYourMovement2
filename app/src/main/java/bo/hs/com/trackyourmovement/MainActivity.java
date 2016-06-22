@@ -62,13 +62,14 @@ public class MainActivity extends AppCompatActivity
     //ArrayAdapter<String> adapter;
 
     //ALARM MANAGER
-    private Calendar gpscal;
-    private Intent gpsintent;
-    private PendingIntent gpspintent;
-    private AlarmManager gpsalarm;
+    public Calendar gpscal;
+    public Intent gpsintent;
+    public PendingIntent gpspintent;
+    public AlarmManager gpsalarm;
     //ALARM MANAGER ENDE
 
-    public boolean alarmUp;
+    public boolean alarmUp = false;
+    public String username;
 
     //Fragmente
     public Position_Fragment positionfragment;
@@ -124,11 +125,11 @@ public class MainActivity extends AppCompatActivity
         regfragment = (Reg_Fragment) Fragment.instantiate(this, Reg_Fragment.class.getName());
 
         //ALARM MANAGER
-        gpscal = Calendar.getInstance();
+        /*gpscal = Calendar.getInstance();
         gpsintent = new Intent(this, GPSService.class);
         gpsintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         gpspintent = PendingIntent.getService(this, 0, gpsintent, 0);
-        gpsalarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        gpsalarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);*/
         //ALARM MANAGER ENDE
 
         alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent(this, GPSService.class), PendingIntent.FLAG_NO_CREATE) != null);
@@ -232,6 +233,7 @@ public class MainActivity extends AppCompatActivity
                     /* requestLocationUpdates( provider | minTime in milsec | minDistance in meter | locationListener ) */
                     //locationManager.requestLocationUpdates("gps", FIVE_INTERVALL, 0, locationListener);
                     gpsalarm.setRepeating(AlarmManager.RTC, gpscal.getTimeInMillis(), 60*1000, gpspintent);
+                    alarmUp = true;
 
                 }else{
                     //locationManager.removeUpdates(locationListener);
@@ -241,6 +243,7 @@ public class MainActivity extends AppCompatActivity
                     if (gpspintent != null) {
                         gpspintent.cancel();
                     }
+                    alarmUp = false;
                 }
             }
         });
@@ -403,6 +406,14 @@ public class MainActivity extends AppCompatActivity
 
     public void setAlarmUp(boolean alarmUp) {
         this.alarmUp = alarmUp;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 }
